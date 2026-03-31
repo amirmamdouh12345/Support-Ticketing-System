@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: it-support-app
+  data:
+    mongodb:
+      auto-index-creation: true
+
+server:
+  port: 8888
+
+# Uncomment to run service locally
+MONGO_USERS_HOST: localhost      #container ip
+MONGO_USERS_PORT: 27017
+MONGO_USERS_DB: it-support-users
+MONGO_USERS_USERNAME: admin
+MONGO_USERS_PASSWORD: password
+MONGO_USERS_AUTH_SOURCE: admin

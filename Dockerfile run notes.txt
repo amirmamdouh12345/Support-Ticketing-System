@@ -1,0 +1,8 @@
+when copy app from windows to wsl, you need to check some things:
+- rm application.properties:Zone.Identifier 
+- check the gradle version    less than 9 
+
+
+connection service to mongodb
+- check network 
+- check if the mongo container ip is changed 

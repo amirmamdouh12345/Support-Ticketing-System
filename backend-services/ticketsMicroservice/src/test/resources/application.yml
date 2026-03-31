@@ -1,0 +1,27 @@
+spring:
+  data:
+    mongodb:
+      # We leave 'uri' out! Testcontainers will inject the real URI
+      # at runtime using @ServiceConnection.
+      database: it-support-test-db
+
+  # Stop Hibernate/Data from creating extra noise in your logs
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: create-drop
+
+# If you have custom properties in your main application.yml,
+# override them here so tests don't send real emails or call real APIs.
+#app:
+#  services:
+#    user-service-url: http://localhost:8081 # Point to WireMock instead of the real server
+#    api-key: "test-secret-key"
+
+spring.main.allow-bean-definition-overriding: true
+
+logging:
+  level:
+    root: INFO
+    com.it_support_app: DEBUG # See your own logs clearly during tests
+    org.testcontainers: INFO

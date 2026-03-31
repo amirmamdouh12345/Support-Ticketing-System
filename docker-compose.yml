@@ -1,0 +1,89 @@
+services:
+
+   api-gateway:
+     image: api-gateway:latest
+     container_name: api-gateway
+     networks:
+       - it-support-network
+   
+   users-service:
+     image: users-service:latest
+     container_name: user-service
+     depends_on:
+       - users-mongodb
+     environment:
+       - MONGO_USERS_HOST=${MONGO_USERS_HOST}
+       - MONGO_USERS_PORT=${MONGO_USERS_PORT}
+       - MONGO_USERS_DB=${MONGO_USERS_DB}
+       - MONGO_USERS_USERNAME=${MONGO_USERS_USERNAME}
+       - MONGO_USERS_PASSWORD=${MONGO_USERS_PASSWORD}
+       - MONGO_USERS_AUTH_SOURCE=${MONGO_USERS_AUTH_SOURCE}
+
+     networks:
+       - it-support-network
+
+
+   tickets-service:
+    image: tickets-service:latest
+    container_name: tickets-service
+    depends_on:
+      - tickets-mongodb
+    environment:
+      - MONGO_TICKETS_HOST=${MONGO_TICKETS_HOST}
+      - MONGO_TICKETS_PORT=${MONGO_TICKETS_PORT}
+      - MONGO_TICKETS_DB=${MONGO_TICKETS_DB}
+      - MONGO_TICKETS_USERNAME=${MONGO_TICKETS_USERNAME}
+      - MONGO_TICKETS_PASSWORD=${MONGO_TICKETS_PASSWORD}
+      - MONGO_TICKETS_AUTH_SOURCE=${MONGO_TICKETS_AUTH_SOURCE}
+    networks:
+      - it-support-network
+
+   users-mongodb:
+      image: mongo:latest
+      container_name: mongodb_container
+      environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERS_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_USERS_PASSWORD}
+      ports:
+       - "27017:27017"
+      volumes:
+        - mongodb_user_data:/data/db
+      networks:
+        - it-support-network
+
+   tickets-mongodb:
+     image: mongo:latest
+     container_name: ticket_container
+     environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_TICKETS_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_TICKETS_PASSWORD}
+     ports:
+     - "27018:27017"
+     volumes:
+       - mongodb_ticket_data:/data/db
+     networks:
+       - it-support-network
+
+
+
+
+   keycloak:
+     image: quay.io/keycloak/keycloak:26.5.4
+     container_name: keycloak_container
+     environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KEYCLOAK_ADMIN_USERNAME}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+     ports:
+        - "9090:8080"
+     command: start-dev
+     volumes:
+        - keycloak_db:/data/it-support/keycloak-db
+
+volumes:
+  mongodb_user_data:
+  mongodb_ticket_data:
+  keycloak_db:
+
+networks:
+  it-support-network:
+    name: it-support-network

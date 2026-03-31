@@ -1,0 +1,18 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: API Gateway
+  cloud:
+    gateway:
+      routes:
+        - id: User_Microservice
+          uri: http://localhost:8888
+          predicates:
+            - Path=/api/v1/users/**
+
+        - id: Ticket_microservice
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/v1/comments/**,/api/v1/tickets/**,/api/v1/ticketLogs/**

@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: it-support-app
+  microservice:
+    ticket:
+      url: http://localhost:8888/api/v1/users
+    user:
+      validate: /validate/itSupport
+      fetch:
+        usernames: /fetch/usernames
+  data:
+    mongodb:
+      auto-index-creation: true
+
+
+
+
+# Uncomment to run service locally
+MONGO_TICKETS_HOST: localhost     #container ip
+MONGO_TICKETS_PORT: 27018
+MONGO_TICKETS_DB: it-support-tickets
+MONGO_TICKETS_USERNAME: admin
+MONGO_TICKETS_PASSWORD: password
+MONGO_TICKETS_AUTH_SOURCE: admin
